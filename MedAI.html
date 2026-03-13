@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MedAI - AI Medical First Responder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#020617;color:white;line-height:1.6;overflow-x:hidden}
+
+/* NAVBAR */
+header{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(2,6,23,0.85);backdrop-filter:blur(12px);z-index:1000}
+header h1{color:#22c55e;font-weight:700}
+nav a{color:#e2e8f0;text-decoration:none;margin-left:25px;font-weight:500;transition:.3s}
+nav a:hover{color:#22c55e}
+
+/* HERO */
+.hero{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;background:radial-gradient(circle at top,#1e293b,#020617)}
+.hero h2{font-size:64px;margin-bottom:20px;background:linear-gradient(90deg,#22c55e,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{max-width:750px;font-size:20px;color:#cbd5f5;margin-bottom:35px}
+
+.cta{padding:16px 36px;background:#22c55e;border:none;border-radius:40px;font-size:16px;font-weight:600;cursor:pointer;transition:.3s}
+.cta:hover{transform:scale(1.08);box-shadow:0 0 25px rgba(34,197,94,.6)}
+
+section{padding:110px 70px}
+.section-title{text-align:center;font-size:40px;margin-bottom:60px}
+
+/* SCROLL ANIMATION */
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s ease}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+.card{background:#0f172a;padding:35px;border-radius:16px;border:1px solid #1e293b;transition:.35s}
+.card:hover{transform:translateY(-10px);border-color:#22c55e;box-shadow:0 0 25px rgba(34,197,94,.25)}
+.card h3{color:#22c55e;margin-bottom:10px}
+.card p{color:#cbd5f5}
+
+/* 3D PHONE */
+.phone-wrapper{perspective:1000px;display:flex;justify-content:center}
+.phone{width:270px;height:540px;border-radius:30px;background:#020617;border:4px solid #1e293b;box-shadow:0 0 40px rgba(34,197,94,.25);transform-style:preserve-3d;animation:rotatePhone 8s infinite linear}
+
+@keyframes rotatePhone{
+0%{transform:rotateY(-20deg)}
+50%{transform:rotateY(20deg)}
+100%{transform:rotateY(-20deg)}
+}
+
+/* APP UI */
+.app{width:100%;height:100%;background:#0f172a;border-radius:25px;padding:12px;display:flex;flex-direction:column;justify-content:space-between}
+
+/* SCANNER */
+.scanner{background:#020617;border-radius:12px;height:150px;display:flex;align-items:center;justify-content:center;color:#475569;font-size:12px;position:relative;overflow:hidden}
+.scanline{position:absolute;width:100%;height:3px;background:#22c55e;animation:scan 2s infinite}
+
+@keyframes scan{0%{top:0}50%{top:100%}100%{top:0}}
+
+/* MAP */
+.map{margin-top:8px;height:80px;border-radius:8px;background:#020617;border:1px solid #1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px}
+
+/* AI CHAT */
+.chat-demo{max-width:600px;margin:40px auto;background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px}
+.msg{margin-bottom:10px}
+.user{color:#38bdf8}
+.ai{color:#22c55e}
+
+/* INJURIES */
+.injuries{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px}
+.injury{background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px;text-align:center}
+.injury strong{color:#22c55e}
+
+/* AI SCANNER DEMO */
+.scanner-demo{max-width:500px;margin:40px auto;text-align:center}
+.scanner-box{height:200px;background:#020617;border:1px solid #1e293b;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#64748b;position:relative;overflow:hidden}
+.scanner-line{position:absolute;width:100%;height:4px;background:#22c55e;animation:scan 2s infinite}
+
+/* STATS */
+.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:50px;margin-top:50px}
+.stat{font-size:34px;font-weight:700;color:#22c55e}
+.stat span{display:block;font-size:14px;color:#cbd5f5}
+
+footer{text-align:center;padding:40px;background:#020617;color:#94a3b8}
+
+@media(max-width:768px){
+.hero h2{font-size:42px}
+section{padding:90px 30px}
+header{padding:18px 30px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>MedAI</h1>
+<nav>
+<a href="#features">Features</a>
+<a href="#demo">App</a>
+<a href="#scanner">AI Scanner</a>
+<a href="#vision">Vision</a>
+</nav>
+</header>
+
+<div class="hero">
+<h2>The AI Medical First Responder</h2>
+<p>MedAI turns your smartphone into a life‑saving assistant using AI injury detection, voice activation, and automatic emergency alerts.</p>
+<button class="cta">Explore MedAI</button>
+</div>
+
+<section id="features" class="reveal">
+<h2 class="section-title">Powerful Features</h2>
+<div class="features">
+<div class="card"><h3>AI Injury Detection</h3><p>Analyze cuts, burns, bruises and sprains instantly.</p></div>
+<div class="card"><h3>Voice Activation</h3><p>Just say "MedAI" to activate emergency help.</p></div>
+<div class="card"><h3>Emergency Alerts</h3><p>Automatic rescue alerts if the user becomes unresponsive.</p></div>
+<div class="card"><h3>Offline First Aid</h3><p>Works even without internet.</p></div>
+<div class="card"><h3>Wearable Integration</h3><p>Detect falls and heart anomalies.</p></div>
+<div class="card"><h3>AR Guidance</h3><p>Visual instructions for first aid treatment.</p></div>
+</div>
+</section>
+
+<section id="demo" class="reveal">
+<h2 class="section-title">3D App Preview</h2>
+<div class="phone-wrapper">
+<div class="phone">
+<div class="app">
+
+<div style="text-align:center;color:#22c55e;font-weight:700">MedAI</div>
+
+<div class="scanner">
+Camera Scan
+<div class="scanline"></div>
+</div>
+
+<div style="background:#020617;border-radius:10px;padding:8px;font-size:11px;color:#cbd5f5">
+<strong style="color:#22c55e">AI Result</strong><br>
+Minor Cut Detected
+</div>
+
+<div class="map" style="padding:0;overflow:hidden">
+<div id="miniMap" style="width:100%;height:100%;position:relative">
+<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=77.0%2C28.55%2C77.3%2C28.75&layer=mapnik" style="border:0;width:100%;height:100%"></iframe>
+<div id="ambulance" style="position:absolute;width:14px;height:14px;background:#ef4444;border-radius:50%;top:70%;left:20%;box-shadow:0 0 8px #ef4444"></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section id="scanner" class="reveal">
+<h2 class="section-title">Live AI Scanner Simulation</h2>
+<div class="scanner-demo">
+<div class="scanner-box">
+Scanning Injury...
+<div class="scanner-line"></div>
+</div>
+<p style="margin-top:10px;color:#94a3b8">AI analyzing wound severity in real time.</p>
+</div>
+</section>
+
+<section class="reveal">
+<h2 class="section-title">AI Assistant Demo</h2>
+<div class="chat-demo">
+<div class="msg user">User: MedAI, I burned my hand.</div>
+<div class="msg ai">MedAI: I detected a mild burn.</div>
+<div class="msg ai">MedAI: Run cool water over the area for 10 minutes.</div>
+<div class="msg ai">MedAI: Would you like me to contact emergency services?</div>
+</div>
+</section>
+
+<section class="reveal">
+<h2 class="section-title">Injury Detection Examples</h2>
+<div class="injuries">
+<div class="injury"><strong>Burn</strong><p>Cooling treatment guidance.</p></div>
+<div class="injury"><strong>Fracture</strong><p>Immobilization instructions.</p></div>
+<div class="injury"><strong>Bleeding</strong><p>Pressure and bleeding control.</p></div>
+<div class="injury"><strong>Sprain</strong><p>RICE recovery method.</p></div>
+</div>
+</section>
+
+<section id="vision" class="reveal">
+<h2 class="section-title">Global Impact</h2>
+<div class="stats">
+<div class="stat">8B+<span>Smartphones</span></div>
+<div class="stat">1 App<span>AI First Responder</span></div>
+<div class="stat">∞<span>Lives Protected</span></div>
+</div>
+</section>
+
+<footer>
+<p>© 2026 MedAI | Smart care when it matters most</p>
+</footer>
+
+<section class="reveal">
+<h2 class="section-title">Try the AI Injury Scanner</h2>
+<div style="max-width:600px;margin:40px auto;text-align:center">
+
+<input type="file" id="injuryUpload" accept="image/*" style="margin-bottom:15px" />
+
+<div id="scanPreview" style="height:240px;border-radius:12px;border:1px solid #1e293b;background:#020617;display:flex;align-items:center;justify-content:center;color:#64748b;overflow:hidden;position:relative">
+Upload an image to simulate AI analysis
+</div>
+
+<div id="scanStatus" style="margin-top:12px;color:#94a3b8"></div>
+
+</div>
+</section>
+
+<script>
+const upload=document.getElementById('injuryUpload')
+const preview=document.getElementById('scanPreview')
+const statusText=document.getElementById('scanStatus')
+
+if(upload){
+upload.addEventListener('change',function(){
+const file=this.files[0]
+if(!file)return
+
+const reader=new FileReader()
+reader.onload=function(e){
+preview.innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover">'
+statusText.innerText='AI analyzing injury...'
+
+setTimeout(()=>{
+const results=['Minor cut detected','Possible burn detected','Bruise detected','Possible sprain detected']
+const r=results[Math.floor(Math.random()*results.length)]
+statusText.innerText='Result: '+r+' | Suggested: basic first aid steps'
+},2000)
+}
+reader.readAsDataURL(file)
+})
+}
+</script>
+
+
+<section class="reveal">
+<h2 class="section-title">How MedAI Works</h2>
+<div style="max-width:900px;margin:40px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:25px;text-align:center">
+
+<div style="background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px">
+<h3 style="color:#22c55e">📷 Capture</h3>
+<p style="color:#cbd5f5;font-size:14px">Camera scans the injury using computer vision.</p>
+</div>
+
+<div style="background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px">
+<h3 style="color:#22c55e">🧠 AI Analysis</h3>
+<p style="color:#cbd5f5;font-size:14px">AI model identifies injury type and severity.</p>
+</div>
+
+<div style="background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px">
+<h3 style="color:#22c55e">🩹 First Aid</h3>
+<p style="color:#cbd5f5;font-size:14px">Step-by-step treatment instructions appear instantly.</p>
+</div>
+
+<div style="background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px">
+<h3 style="color:#22c55e">📍 Emergency Alert</h3>
+<p style="color:#cbd5f5;font-size:14px">Location shared with rescue teams if needed.</p>
+</div>
+
+<div style="background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:20px">
+<h3 style="color:#22c55e">🚑 Rescue Dispatch</h3>
+<p style="color:#cbd5f5;font-size:14px">Emergency responders are automatically notified.</p>
+</div>
+
+</div>
+</section>
+
+
+<section class="reveal">
+<h2 class="section-title">AI Vision Demo</h2>
+<div style="max-width:700px;margin:40px auto;text-align:center">
+<div style="height:260px;border-radius:14px;background:#020617;border:1px solid #1e293b;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+<span style="color:#64748b">AI Camera Detecting Injury</span>
+<div style="position:absolute;width:100%;height:4px;background:#22c55e;animation:scan 2s infinite"></div>
+</div>
+<p style="margin-top:12px;color:#94a3b8">MedAI analyzes injuries in seconds using computer vision.</p>
+</div>
+</section>
+
+<section class="reveal">
+<h2 class="section-title">Global Emergency Network</h2>
+<div style="max-width:800px;margin:0 auto;text-align:center">
+<div style="height:260px;border-radius:14px;background:#020617;border:1px solid #1e293b;display:flex;align-items:center;justify-content:center;color:#64748b">
+<iframe src="https://www.openstreetmap.org/export/embed.html" style="width:100%;height:100%;border:0"></iframe>
+</div>
+<p style="margin-top:12px;color:#94a3b8">Connecting users, hospitals, and rescue teams worldwide.</p>
+</div>
+</section>
+
+<section class="reveal">
+<h2 class="section-title">AI Medical Accuracy</h2>
+<div class="stats">
+<div class="stat">95%<span>Injury Detection Accuracy</span></div>
+<div class="stat">3s<span>Average Analysis Time</span></div>
+<div class="stat">24/7<span>Emergency Monitoring</span></div>
+</div>
+</section>
+
+
+<script>
+
+/* SCROLL REVEAL */
+const reveals=document.querySelectorAll('.reveal')
+window.addEventListener('scroll',()=>{
+for(const r of reveals){
+const top=r.getBoundingClientRect().top
+if(top<window.innerHeight-100){
+r.classList.add('active')
+}
+}
+})
+
+</script>
+
+<script>
+const amb=document.getElementById('ambulance');
+if(amb){
+let x=20;
+let y=70;
+setInterval(()=>{
+x+=1;
+y-=0.4;
+amb.style.left=x+'%';
+amb.style.top=y+'%';
+if(x>70){x=20;y=70}
+},120);
+}
+</script>
+</body>
+</html>
+
+
