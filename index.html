@@ -88,6 +88,20 @@ footer{text-align:center;padding:40px;background:#020617;color:#94a3b8}
 section{padding:90px 30px}
 header{padding:18px 30px}
 }
+
+.aiWave{
+position:absolute;
+border:2px solid #22c55e;
+border-radius:50%;
+animation:waveExpand 2s ease-out forwards;
+opacity:.6
+}
+
+@keyframes waveExpand{
+0%{width:20px;height:20px;opacity:.8}
+100%{width:600px;height:600px;opacity:0}
+}
+
 </style>
 </head>
 
@@ -234,6 +248,23 @@ statusText.innerText='Result: '+r+' | Suggested: basic first aid steps'
 reader.readAsDataURL(file)
 })
 }
+
+function triggerWave(){
+const center=document.getElementById('medaiCenter');
+const map=document.getElementById('networkMap');
+const rect=center.getBoundingClientRect();
+const mapRect=map.getBoundingClientRect();
+
+const wave=document.createElement('div');
+wave.className='aiWave';
+wave.style.left=(rect.left-mapRect.left-10)+'px';
+wave.style.top=(rect.top-mapRect.top-10)+'px';
+
+map.appendChild(wave);
+
+setTimeout(()=>wave.remove(),2000);
+}
+
 </script>
 
 
@@ -285,7 +316,113 @@ reader.readAsDataURL(file)
 <h2 class="section-title">Global Emergency Network</h2>
 <div style="max-width:800px;margin:0 auto;text-align:center">
 <div style="height:260px;border-radius:14px;background:#020617;border:1px solid #1e293b;display:flex;align-items:center;justify-content:center;color:#64748b">
-<iframe src="https://www.openstreetmap.org/export/embed.html" style="width:100%;height:100%;border:0"></iframe>
+<div style="position:relative;width:100%;height:100%">
+<div id="userCounter" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:5;color:#22c55e;font-weight:700;font-size:20px;letter-spacing:1px;text-shadow:0 0 10px #22c55e">MedAI Users Worldwide: <span id="countNum">1200</span></div>
+
+<div id="networkMap" style="width:100%;height:100%;position:relative;background:#020617;overflow:hidden">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.08">
+
+<div id="medaiCenter" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;background:#22c55e;border-radius:50%;box-shadow:0 0 18px #22c55e"></div>
+
+<div id="ambulanceNode" style="position:absolute;top:65%;left:35%;width:14px;height:14px;background:#ef4444;border-radius:50%;box-shadow:0 0 12px #ef4444"></div>
+
+</div>
+
+<style>
+.phoneNode{position:absolute;width:10px;height:10px;background:#38bdf8;border-radius:50%;box-shadow:0 0 10px #38bdf8;animation:pulse 2s infinite}
+
+@keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.6}100%{transform:scale(1);opacity:1}}
+
+.connectionLine{position:absolute;height:2px;background:linear-gradient(90deg,#38bdf8,#22c55e);transform-origin:left center;opacity:.7}
+
+.dataPulse{position:absolute;width:6px;height:6px;background:#22c55e;border-radius:50%}
+</style>
+
+<script>
+const map=document.getElementById('networkMap');
+
+function createUser(){
+const node=document.createElement('div');
+node.className='phoneNode';
+
+const x=Math.random()*90+5;
+const y=Math.random()*80+10;
+
+node.style.left=x+'%';
+node.style.top=y+'%';
+
+map.appendChild(node);
+
+connectNode(node);
+}
+
+function connectNode(node){
+const center=document.getElementById('medaiCenter').getBoundingClientRect();
+const r=node.getBoundingClientRect();
+
+const mapRect=map.getBoundingClientRect();
+
+const x1=r.left+r.width/2;
+const y1=r.top+r.height/2;
+const x2=center.left+center.width/2;
+const y2=center.top+center.height/2;
+
+const length=Math.hypot(x2-x1,y2-y1);
+const angle=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+
+const line=document.createElement('div');
+line.className='connectionLine';
+line.style.width=length+'px';
+line.style.left=(x1-mapRect.left)+'px';
+line.style.top=(y1-mapRect.top)+'px';
+line.style.transform='rotate('+angle+'deg)';
+
+map.appendChild(line);
+
+animatePulse(x1-mapRect.left,y1-mapRect.top,angle,length);
+}
+
+function animatePulse(x,y,angle,length){
+const pulse=document.createElement('div');
+pulse.className='dataPulse';
+pulse.style.left=x+'px';
+pulse.style.top=y+'px';
+pulse.style.transform='rotate('+angle+'deg)';
+map.appendChild(pulse);
+
+let progress=0;
+
+const interval=setInterval(()=>{
+progress+=3;
+pulse.style.transform='translateX('+progress+'px) rotate('+angle+'deg)';
+if(progress>length){
+clearInterval(interval);
+pulse.remove();
+}
+},30);
+}
+
+setInterval(()=>{
+createUser();
+triggerWave();();
+const c=document.getElementById('countNum');
+let v=parseInt(c.innerText);
+v+=Math.floor(Math.random()*5)+1;
+c.innerText=v.toLocaleString();
+},2000);
+
+const amb=document.getElementById('ambulanceNode');
+let ax=35;
+let ay=65;
+setInterval(()=>{
+ax+=0.2;
+ay-=0.1;
+amb.style.left=ax+'%';
+amb.style.top=ay+'%';
+if(ax>50){ax=35;ay=65}
+},80);
+</script>
 </div>
 <p style="margin-top:12px;color:#94a3b8">Connecting users, hospitals, and rescue teams worldwide.</p>
 </div>
@@ -330,8 +467,63 @@ if(x>70){x=20;y=70}
 },120);
 }
 </script>
+
+<script>
+// Scroll-triggered MedAI scan demo
+const observer=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){startScanDemo();}
+});
+},{threshold:0.6});
+
+const phone=document.querySelector('#phonePreview, .phone-preview, .mobile-preview');
+if(phone){observer.observe(phone);} 
+
+function startScanDemo(){
+if(document.getElementById('scanLine')) return;
+
+const scan=document.createElement('div');
+scan.id='scanLine';
+scan.style.position='absolute';
+scan.style.left='0';
+scan.style.right='0';
+scan.style.height='4px';
+scan.style.background='linear-gradient(90deg,transparent,#22c55e,transparent)';
+scan.style.boxShadow='0 0 12px #22c55e';
+scan.style.animation='scanMove 2s linear infinite';
+
+const container=phone;
+container.style.position='relative';
+container.appendChild(scan);
+
+const result=document.createElement('div');
+result.innerText='Injury detected: Minor cut – Clean, apply antiseptic, bandage.';
+result.style.position='absolute';
+result.style.bottom='10px';
+result.style.left='10px';
+result.style.right='10px';
+result.style.background='rgba(2,6,23,.8)';
+result.style.color='#22c55e';
+result.style.fontSize='12px';
+result.style.padding='8px';
+result.style.borderRadius='8px';
+result.style.border='1px solid #22c55e';
+result.style.boxShadow='0 0 10px rgba(34,197,94,.5)';
+
+setTimeout(()=>{container.appendChild(result);},1800);
+}
+</script>
+
+<style>
+@keyframes scanMove{
+0%{top:0}
+100%{top:100%}
+}
+</style>
+
 </body>
 </html>
+
 
 
 
